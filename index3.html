@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phonebook iOS Ready</title>
+<style>
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:#f4f6f8;
+}
+.app { height:100vh; display:flex; flex-direction:column; }
+.header { padding:16px; background:#0b5cff; color:white; text-align:center; font-size:1.2rem; font-weight:600; }
+.search-container { padding:10px; background:#fff; }
+.search-container input { width:100%; padding:8px; font-size:1rem; border:1px solid #ccc; border-radius:4px; }
+.list { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.contact-button { width:100%; padding:14px; border:none; border-bottom:1px solid #ddd; text-align:left; background:white; font-size:1rem; cursor:pointer; }
+.contact-button:hover { background:#f0f4ff; }
+.highlight { background-color:yellow; }
+.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#0b5cff; color:white; padding:10px 20px; border-radius:20px; display:none; font-size:0.9rem; z-index:100; text-align:center; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">Phonebook</div>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search names...">
+  </div>
+  <div class="list" id="contactList"></div>
+</div>
+<div class="toast" id="toast">Extension copied! Open Zoom and paste it.</div>
+
+<script>
+// --- Beispielkontaktliste (ersetze hier deine 65 Kontakte) ---
+const contactList = [
+  {first:"Sarah", last:"Abbey", ext:"9086"},
+  {first:"Heather", last:"Amato", ext:"9901"},
+  {first:"Nicole", last:"Artiga-Purcell", ext:"9086"},
+  {first:"Lindsey", last:"Atkinson", ext:"9032"},
+  {first:"Nora", last:"Bailetti", ext:"9962"},
+  {first:"Sarah", last:"Baxter", ext:"9065"},
+  {first:"Daydra", last:"Bell", ext:"9077"},
+  {first:"Kate", last:"Brubaker", ext:"9084"},
+  {first:"Riley", last:"Camp", ext:"9901"},
+  {first:"Maria", last:"Cardenas", ext:"9047"},
+  // ... bis 65
+];
+
+// Alphabetisch sortieren
+contactList.sort((a,b)=>{
+  if(a.last.toLowerCase() === b.last.toLowerCase()){
+    return a.first.toLowerCase().localeCompare(b.first.toLowerCase());
+  }
+  return a.last.toLowerCase().localeCompare(b.last.toLowerCase());
+});
+
+const listEl = document.getElementById("contactList");
+const toast = document.getElementById("toast");
+
+function highlightMatch(text, query){
+  if(!query) return text;
+  const regex = new RegExp(`(${query})`, "gi");
+  return text.replace(regex, `<span class="highlight">$1</span>`);
+}
+
+function showToast(message){
+  toast.textContent = message;
+  toast.style.display = "block";
+  setTimeout(()=>toast.style.display="none", 2000);
+}
+
+function renderList(filteredContacts, query=""){
+  listEl.innerHTML = "";
+  filteredContacts.forEach(c=>{
+    const btn = document.createElement("button");
+    btn.className = "contact-button";
+    btn.innerHTML = highlightMatch(`${c.first} ${c.last} - ${c.ext}`, query);
+    btn.addEventListener("click", ()=>{
+      if(c.ext){
+        navigator.clipboard.writeText(c.ext).then(()=>{
+          showToast(`Copied ${c.first} ${c.last} - ${c.ext}. Open Zoom and paste.`);
+        }).catch(()=>{
+          showToast("Copy failed. Please copy manually.");
+        });
+      } else {
+        showToast("No extension available");
+      }
+    });
+    listEl.appendChild(btn);
+  });
+}
+
+// Initial render
+renderList(contactList);
+
+// Suchfunktion
+document.getElementById("searchInput").addEventListener("input", e=>{
+  const query = e.target.value.toLowerCase();
+  const filtered = contactList.filter(c=>{
+    return c.first.toLowerCase().includes(query) || c.last.toLowerCase().includes(query);
+  });
+  renderList(filtered, query);
+});
+</script>
+</body>
+</html>
