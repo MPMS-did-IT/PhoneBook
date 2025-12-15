@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iOS Phonebook</title>
+<style>
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:#f4f6f8;
+}
+.app { height:100vh; display:flex; flex-direction:column; }
+.header { padding:16px; background:#0b5cff; color:white; text-align:center; font-size:1.2rem; font-weight:600; }
+.search-container { padding:10px; background:#fff; }
+.search-container input { width:100%; padding:8px; font-size:1rem; border:1px solid #ccc; border-radius:4px; }
+.list { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.contact-button { width:100%; padding:14px; border:none; border-bottom:1px solid #ddd; text-align:left; background:white; font-size:1rem; cursor:pointer; }
+.contact-button:hover { background:#f0f4ff; }
+.highlight { background-color:yellow; }
+.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#0b5cff; color:white; padding:10px 20px; border-radius:20px; display:none; font-size:0.9rem; z-index:100; text-align:center; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">Phonebook</div>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search names...">
+  </div>
+  <div class="list" id="contactList"></div>
+</div>
+<div class="toast" id="toast">Extension copied! Open Zoom and paste it.</div>
+
+<script>
+const contactList = [
+{first:"Sarah", last:"Abbey", ext:"9086"},
+{first:"Elizabeth", last:"Hylton", ext:"9047"},
+{first:"Heather", last:"Amato", ext:"9901"},
+{first:"Patrick", last:"Jones", ext:"9042"},
+{first:"Nicole", last:"Artiga-Purcell", ext:"9086"},
+{first:"Mike", last:"Knapp", ext:"9068"},
+{first:"Lindsey", last:"Atkinson", ext:"9032"},
+{first:"Alla", last:"Krel", ext:"9057"},
+{first:"Daniel", last:"Larson", ext:"9079"},
+{first:"Nora", last:"Bailetti", ext:"9962"},
+{first:"Claudia", last:"Leograndis", ext:"9900"},
+{first:"Sarah", last:"Baxter", ext:"9065"},
+{first:"Jennifer", last:"Lucas", ext:"9043"},
+{first:"Daydra", last:"Bell", ext:"9077"},
+{first:"Stephanie", last:"Lyle", ext:"9066"},
+{first:"Kate", last:"Brubaker", ext:"9084"},
+{first:"Paul", last:"Maes", ext:"9965"},
+{first:"Riley", last:"Camp", ext:"9901"},
+{first:"Katie", last:"McGee", ext:"9078"},
+{first:"Maria", last:"Cardenas", ext:"9047"},
+{first:"Kristine", last:"Munroe", ext:"9037"},
+{first:"Leene", last:"Coleman", ext:"9056"},
+{first:"Dave", last:"Munson", ext:"9069"},
+{first:"Lilah", last:"Collins", ext:"9081"},
+{first:"Caitlin", last:"Nassar", ext:"9035"},
+{first:"Dwight", last:"Cousin", ext:"9088"},
+{first:"Teresa", last:"O'Connor", ext:"9044"},
+{first:"Dave", last:"DeMartini", ext:"9070"},
+{first:"Lily", last:"Pachas", ext:"9902"},
+{first:"Tammy", last:"Dempsey", ext:"9902"},
+{first:"Matt", last:"Penwell", ext:"9036"},
+{first:"Mark", last:"DeRango", ext:"8051"},
+{first:"Luis", last:"Perez", ext:"9033"},
+{first:"Maria", last:"Diaz", ext:"9065"},
+{first:"Helen", last:"Pogrel", ext:"9062"},
+{first:"Ferenc", last:"Dobronyi", ext:"9038"},
+{first:"Marcie", last:"Roman", ext:"9067"},
+{first:"Lindsey", last:"Dwyer", ext:"9036"},
+{first:"Tanja", last:"Schulte-Irwin", ext:"9053"},
+{first:"Lovely", last:"Fernandez", ext:"9033"},
+{first:"Julia", last:"Smith", ext:"9044"},
+{first:"Silvia", last:"Flores-Vasquez", ext:"9967"},
+{first:"Angela", last:"Solberg", ext:"9081"},
+{first:"Jodi", last:"Freedman", ext:"9089"},
+{first:"Amy", last:"Taylor", ext:"9050"},
+{first:"Brianna", last:"Giammasi", ext:"9052"},
+{first:"Jen", last:"Tuten", ext:"9080"},
+{first:"Teresa", last:"Gomez", ext:"9067"},
+{first:"Martin", last:"Voss", ext:"9075"},
+{first:"Laura", last:"Gracia", ext:"9900"},
+{first:"Meike", last:"Wanberg", ext:"9037"},
+{first:"Phil", last:"Gutierrez", ext:"9040"},
+{first:"Stacie", last:"Waters", ext:"9066"},
+{first:"Daisy", last:"Hanretty", ext:"9056"},
+{first:"Rose", last:"Wolf", ext:"9076"},
+{first:"Ginny", last:"Hodges", ext:"9087"},
+{first:"Jennifer", last:"Woodall", ext:"9073"},
+{first:"Margot", last:"Holtzman", ext:"9085"},
+{first:"Michael", last:"Wray", ext:"9034"},
+{first:"Linda", last:"Hoopes", ext:"9039"},
+{first:"Rebecca", last:"Wunderlich", ext:""},
+{first:"Allison", last:"Hovermale", ext:"9053"}
+];
+
+// Sort alphabetisch
+contactList.sort((a,b)=>{
+  if(a.last.toLowerCase() === b.last.toLowerCase()){
+    return a.first.toLowerCase().localeCompare(b.first.toLowerCase());
+  }
+  return a.last.toLowerCase().localeCompare(b.last.toLowerCase());
+});
+
+const listEl = document.getElementById("contactList");
+const toast = document.getElementById("toast");
+
+function highlightMatch(text, query){
+  if(!query) return text;
+  const regex = new RegExp(`(${query})`, "gi");
+  return text.replace(regex, `<span class="highlight">$1</span>`);
+}
+
+function showToast(message){
+  toast.textContent = message;
+  toast.style.display = "block";
+  setTimeout(()=>toast.style.display="none", 2000);
+}
+
+function renderList(filteredContacts, query=""){
+  listEl.innerHTML = "";
+  filteredContacts.forEach(c=>{
+    const btn = document.createElement("button");
+    btn.className = "contact-button";
+    btn.innerHTML = highlightMatch(`${c.first} ${c.last} - ${c.ext}`, query);
+    btn.addEventListener("click", ()=>{
+      if(c.ext){
+        navigator.clipboard.writeText(c.ext).then(()=>{
+          showToast(`Copied ${c.first} ${c.last} - ${c.ext}. Open Zoom and paste.`);
+        }).catch(()=>{
+          showToast("Copy failed. Please copy manually.");
+        });
+      } else {
+        showToast("No extension available");
+      }
+    });
+    listEl.appendChild(btn);
+  });
+}
+
+// Initial render
+renderList(contactList);
+
+// Suchfunktion
+document.getElementById("searchInput").addEventListener("input", e=>{
+  const query = e.target.value.toLowerCase();
+  const filtered = contactList.filter(c=>{
+    return c.first.toLowerCase().includes(query) || c.last.toLowerCase().includes(query);
+  });
+  renderList(filtered, query);
+});
+</script>
+</body>
+</html>
