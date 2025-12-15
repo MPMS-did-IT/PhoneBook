@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phonebook</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f6f8;
+    }
+    .app {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      padding: 16px;
+      background: #0b5cff;
+      color: white;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .search-container {
+      padding: 10px;
+      background: #ffffff;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .list {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .contact {
+      padding: 14px;
+      border-bottom: 1px solid #ddd;
+    }
+    .contact:hover {
+      background: #f0f4ff;
+    }
+    .highlight {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">Phonebook</div>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search names..." />
+    </div>
+    <div class="list" id="contactList"></div>
+  </div>
+
+  <script>
+    const contactList = [
+      {first:"Sarah", last:"Abbey", ext:"9086"},
+      {first:"Heather", last:"Amato", ext:"9901"},
+      {first:"Nicole", last:"Artiga-Purcell", ext:"9086"},
+      {first:"Lindsey", last:"Atkinson", ext:"9032"},
+      {first:"Nora", last:"Bailetti", ext:"9962"},
+      {first:"Sarah", last:"Baxter", ext:"9065"},
+      {first:"Daydra", last:"Bell", ext:"9077"},
+      {first:"Kate", last:"Brubaker", ext:"9084"},
+      {first:"Riley", last:"Camp", ext:"9901"},
+      {first:"Maria", last:"Cardenas", ext:"9047"},
+      {first:"Leene", last:"Coleman", ext:"9056"},
+      {first:"Lilah", last:"Collins", ext:"9081"},
+      {first:"Dwight", last:"Cousin", ext:"9088"},
+      {first:"Dave", last:"DeMartini", ext:"9070"},
+      {first:"Tammy", last:"Dempsey", ext:"9902"},
+      {first:"Mark", last:"DeRango", ext:"8051"},
+      {first:"Maria", last:"Diaz", ext:"9065"},
+      {first:"Ferenc", last:"Dobronyi", ext:"9038"},
+      {first:"Lindsey", last:"Dwyer", ext:"9036"},
+      {first:"Lovely", last:"Fernandez", ext:"9033"},
+      {first:"Silvia", last:"Flores-Vasquez", ext:"9967"},
+      {first:"Jodi", last:"Freedman", ext:"9089"},
+      {first:"Brianna", last:"Giammasi", ext:"9052"},
+      {first:"Teresa", last:"Gomez", ext:"9067"},
+      {first:"Laura", last:"Gracia", ext:"9900"},
+      {first:"Phil", last:"Gutierrez", ext:"9040"},
+      {first:"Daisy", last:"Hanretty", ext:"9056"},
+      {first:"Ginny", last:"Hodges", ext:"9087"},
+      {first:"Margot", last:"Holtzman", ext:"9085"},
+      {first:"Linda", last:"Hoopes", ext:"9039"},
+      {first:"Allison", last:"Hovermale", ext:"9053"},
+      {first:"Elizabeth", last:"Hylton", ext:"9047"},
+      {first:"Patrick", last:"Jones", ext:"9042"},
+      {first:"Mike", last:"Knapp", ext:"9068"},
+      {first:"Alla", last:"Krel", ext:"9057"},
+      {first:"Daniel", last:"Larson", ext:"9079"},
+      {first:"Claudia", last:"Leograndis", ext:"9900"},
+      {first:"Jennifer", last:"Lucas", ext:"9043"},
+      {first:"Stephanie", last:"Lyle", ext:"9066"},
+      {first:"Paul", last:"Maes", ext:"9965"},
+      {first:"Katie", last:"McGee", ext:"9078"},
+      {first:"Kristine", last:"Munroe", ext:"9037"},
+      {first:"Dave", last:"Munson", ext:"9069"},
+      {first:"Caitlin", last:"Nassar", ext:"9035"},
+      {first:"Teresa", last:"O'Connor", ext:"9044"},
+      {first:"Lily", last:"Pachas", ext:"9902"},
+      {first:"Matt", last:"Penwell", ext:"9036"},
+      {first:"Luis", last:"Perez", ext:"9033"},
+      {first:"Helen", last:"Pogrel", ext:"9062"},
+      {first:"Marcie", last:"Roman", ext:"9067"},
+      {first:"Tanja", last:"Schulte-Irwin", ext:"9053"},
+      {first:"Julia", last:"Smith", ext:"9044"},
+      {first:"Angela", last:"Solberg", ext:"9081"},
+      {first:"Amy", last:"Taylor", ext:"9050"},
+      {first:"Jen", last:"Tuten", ext:"9080"},
+      {first:"Martin", last:"Voss", ext:"9075"},
+      {first:"Meike", last:"Wanberg", ext:"9037"},
+      {first:"Stacie", last:"Waters", ext:"9066"},
+      {first:"Rose", last:"Wolf", ext:"9076"},
+      {first:"Jennifer", last:"Woodall", ext:"9073"},
+      {first:"Michael", last:"Wray", ext:"9034"},
+      {first:"Rebecca", last:"Wunderlich", ext:""}
+    ];
+
+    // Sort alphabetically
+    contactList.sort((a,b)=>{
+      if(a.last.toLowerCase() === b.last.toLowerCase()){
+        return a.first.toLowerCase().localeCompare(b.first.toLowerCase());
+      }
+      return a.last.toLowerCase().localeCompare(b.last.toLowerCase());
+    });
+
+    const listEl = document.getElementById("contactList");
+
+    function highlightMatch(text, query){
+      if(!query) return text;
+      const regex = new RegExp(`(${query})`, "gi");
+      return text.replace(regex, `<span class="highlight">$1</span>`);
+    }
+
+    function renderList(filteredContacts, query=""){
+      listEl.innerHTML = "";
+      filteredContacts.forEach(c=>{
+        const div = document.createElement("div");
+        div.className = "contact";
+        div.innerHTML = highlightMatch(`${c.first} ${c.last} - ${c.ext}`, query);
+        div.style.cursor = "pointer";
+
+        // Click triggers Zoom app
+        div.addEventListener("click", e => {
+          const zoomUrl = c.ext ? `zoommtg://zoom.us/call?number=${c.ext}` : `zoomus://`;
+          window.location.href = zoomUrl;
+        });
+
+        listEl.appendChild(div);
+      });
+    }
+
+    // Initial render
+    renderList(contactList);
+
+    // Search functionality
+    document.getElementById("searchInput").addEventListener("input", e=>{
+      const query = e.target.value.toLowerCase();
+      const filtered = contactList.filter(c=>{
+        return c.first.toLowerCase().includes(query) || c.last.toLowerCase().includes(query);
+      });
+      renderList(filtered, query);
+    });
+  </script>
+</body>
+</html>
