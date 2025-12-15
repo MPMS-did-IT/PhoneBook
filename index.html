@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zoom Phonebook</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .app {
+      height: 100vh;              /* auto-fits phone screen */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 16px;
+      background: #0b5cff;
+      color: white;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .list {
+      flex: 1;
+      overflow-y: auto;           /* scrollable list */
+      -webkit-overflow-scrolling: touch;
+      background: white;
+    }
+
+    .contact {
+      padding: 14px 16px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .contact:hover {
+      background: #f0f4ff;
+    }
+
+    .name {
+      font-size: 1rem;
+    }
+
+    .ext {
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">Phonebook</div>
+    <div id="phonebook" class="list"></div>
+  </div>
+
+  <script>
+    /*
+      Edit names and extensions below as needed.
+      Format: { name: "Last, First", ext: "1234" }
+    */
+
+    const contacts = [
+      { name: "Adams, Lily", ext: "4821" },
+      { name: "Baker, Noah", ext: "7394" },
+      { name: "Bennett, Ava", ext: "1056" },
+      { name: "Brown, Lucas", ext: "6642" },
+      { name: "Carter, Mia", ext: "2910" },
+      { name: "Clark, Ethan", ext: "8473" },
+      { name: "Coleman, Sofia", ext: "5581" },
+      { name: "Collins, Jack", ext: "9304" },
+      { name: "Cook, Emma", ext: "1749" },
+      { name: "Cooper, Oliver", ext: "6207" },
+      { name: "Davis, Amelia", ext: "4438" },
+      { name: "Diaz, Mateo", ext: "5016" },
+      { name: "Edwards, Harper", ext: "8860" },
+      { name: "Evans, Henry", ext: "3142" },
+      { name: "Flores, Isabella", ext: "7925" },
+      { name: "Foster, Leo", ext: "2689" },
+      { name: "Garcia, Elena", ext: "9471" },
+      { name: "Gomez, Daniel", ext: "1803" },
+      { name: "Gonzalez, Lucia", ext: "6594" },
+      { name: "Gray, Owen", ext: "4317" },
+      { name: "Green, Chloe", ext: "7068" },
+      { name: "Hall, Ryan", ext: "2194" },
+      { name: "Harris, Zoe", ext: "8731" },
+      { name: "Hernandez, Luis", ext: "3440" },
+      { name: "Hill, Natalie", ext: "9982" },
+      { name: "Howard, Caleb", ext: "5673" },
+      { name: "Jackson, Grace", ext: "7520" },
+      { name: "James, Wyatt", ext: "4096" },
+      { name: "Johnson, Emily", ext: "1268" },
+      { name: "Jones, Michael", ext: "8854" },
+      { name: "King, Hannah", ext: "3319" },
+      { name: "Lee, Andrew", ext: "6981" },
+      { name: "Lewis, Olivia", ext: "2547" },
+      { name: "Lopez, Carlos", ext: "9105" },
+      { name: "Martin, Sophia", ext: "4726" },
+      { name: "Martinez, Diego", ext: "8062" },
+      { name: "Miller, Benjamin", ext: "1934" },
+      { name: "Moore, Layla", ext: "7448" },
+      { name: "Morgan, Isaac", ext: "3651" },
+      { name: "Nelson, Ella", ext: "5890" },
+      { name: "Nguyen, Kevin", ext: "9274" },
+      { name: "Parker, Aria", ext: "4116" },
+      { name: "Perez, Juan", ext: "6709" },
+      { name: "Peterson, Lucy", ext: "2843" },
+      { name: "Phillips, Mason", ext: "5589" },
+      { name: "Ramirez, Ana", ext: "9012" },
+      { name: "Reed, Julian", ext: "3375" },
+      { name: "Rivera, Mateo", ext: "7764" },
+      { name: "Roberts, Claire", ext: "1480" },
+      { name: "Rodriguez, Sofia", ext: "6201" },
+      { name: "Scott, Elijah", ext: "8593" },
+      { name: "Smith, Olivia", ext: "2047" },
+      { name: "Taylor, Jacob", ext: "9736" },
+      { name: "Thomas, Ruby", ext: "4965" },
+      { name: "Turner, Logan", ext: "8124" },
+      { name: "Walker, Avery", ext: "6508" },
+      { name: "White, Noah", ext: "3721" },
+      { name: "Wilson, Maya", ext: "5886" },
+      { name: "Young, Samuel", ext: "9440" }
+    ];
+
+    // Sort alphabetically by name
+    contacts.sort((a, b) => a.name.localeCompare(b.name));
+
+    const phonebook = document.getElementById("phonebook");
+
+    contacts.forEach(contact => {
+      const div = document.createElement("div");
+      div.className = "contact";
+      div.innerHTML = `
+        <div class="name">${contact.name}</div>
+        <div class="ext">-${contact.ext}</div>
+      `;
+
+      // Zoom call when selected
+      div.addEventListener("click", () => {
+        // Zoom deep link (works on devices with Zoom installed)
+        window.location.href = `zoommtg://zoom.us/call?number=${contact.ext}`;
+      });
+
+      phonebook.appendChild(div);
+    });
+  </script>
+</body>
+</html>
