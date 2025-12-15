@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Zoom Phonebook&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f4f6f8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.app {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100vh;<span class="Apple-converted-space">              </span>/* auto-fits phone screen */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.header {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #0b5cff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.2rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.list {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow-y: auto; <span class="Apple-converted-space">          </span>/* scrollable list */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>-webkit-overflow-scrolling: touch;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.contact {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 14px 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 1px solid #eee;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.contact:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f0f4ff;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.name {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.ext {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #555;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="app"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="header"&gt;Phonebook&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="phonebook" class="list"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>/*</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Edit names and extensions below as needed.</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Format: { name: "Last, First", ext: "1234" }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>*/</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const contacts = [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Adams, Lily", ext: "4821" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Baker, Noah", ext: "7394" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Bennett, Ava", ext: "1056" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Brown, Lucas", ext: "6642" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Carter, Mia", ext: "2910" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Clark, Ethan", ext: "8473" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Coleman, Sofia", ext: "5581" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Collins, Jack", ext: "9304" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Cook, Emma", ext: "1749" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Cooper, Oliver", ext: "6207" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Davis, Amelia", ext: "4438" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Diaz, Mateo", ext: "5016" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Edwards, Harper", ext: "8860" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Evans, Henry", ext: "3142" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Flores, Isabella", ext: "7925" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Foster, Leo", ext: "2689" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Garcia, Elena", ext: "9471" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Gomez, Daniel", ext: "1803" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Gonzalez, Lucia", ext: "6594" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Gray, Owen", ext: "4317" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Green, Chloe", ext: "7068" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Hall, Ryan", ext: "2194" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Harris, Zoe", ext: "8731" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Hernandez, Luis", ext: "3440" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Hill, Natalie", ext: "9982" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Howard, Caleb", ext: "5673" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Jackson, Grace", ext: "7520" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "James, Wyatt", ext: "4096" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Johnson, Emily", ext: "1268" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Jones, Michael", ext: "8854" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "King, Hannah", ext: "3319" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Lee, Andrew", ext: "6981" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Lewis, Olivia", ext: "2547" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Lopez, Carlos", ext: "9105" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Martin, Sophia", ext: "4726" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Martinez, Diego", ext: "8062" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Miller, Benjamin", ext: "1934" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Moore, Layla", ext: "7448" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Morgan, Isaac", ext: "3651" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Nelson, Ella", ext: "5890" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Nguyen, Kevin", ext: "9274" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Parker, Aria", ext: "4116" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Perez, Juan", ext: "6709" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Peterson, Lucy", ext: "2843" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Phillips, Mason", ext: "5589" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Ramirez, Ana", ext: "9012" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Reed, Julian", ext: "3375" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Rivera, Mateo", ext: "7764" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Roberts, Claire", ext: "1480" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Rodriguez, Sofia", ext: "6201" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Scott, Elijah", ext: "8593" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Smith, Olivia", ext: "2047" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Taylor, Jacob", ext: "9736" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Thomas, Ruby", ext: "4965" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Turner, Logan", ext: "8124" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Walker, Avery", ext: "6508" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "White, Noah", ext: "3721" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Wilson, Maya", ext: "5886" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ name: "Young, Samuel", ext: "9440" }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Sort alphabetically by name</p>
+<p class="p1"><span class="Apple-converted-space">    </span>contacts.sort((a, b) =&gt; a.name.localeCompare(b.name));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const phonebook = document.getElementById("phonebook");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>contacts.forEach(contact =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const div = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>div.className = "contact";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>div.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="name"&gt;${contact.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="ext"&gt;-${contact.ext}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Zoom call when selected</p>
+<p class="p1"><span class="Apple-converted-space">      </span>div.addEventListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Zoom deep link (works on devices with Zoom installed)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.location.href = `zoommtg://zoom.us/call?number=${contact.ext}`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>phonebook.appendChild(div);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
